@@ -1,7 +1,7 @@
 import 'package:brew/screens/home/home.dart';
 import 'package:flutter/material.dart';
 
-class  wrapper extends StatelessWidget {
+class  Wrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Home(
