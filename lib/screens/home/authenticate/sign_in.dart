@@ -35,7 +35,7 @@ dynamic  result = await _auth.signAnonymous();
           }
           else{
             print('signed in');
-            print(result);
+            print(result.uid);
           }
             }
             ),

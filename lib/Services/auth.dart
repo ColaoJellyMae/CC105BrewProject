@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:brew_crew/models/user.dart';
+import 'package:brew/models/user.dart';
 
 class AuthService {
   //4th video tutorial = signing in anonymously
@@ -7,7 +7,7 @@ class AuthService {
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  //create user obj based on Firebaseuser
+  //create user obj based on FirebaseUser
 
   User _userFromFirebaseUser(FirebaseUser user){
     
