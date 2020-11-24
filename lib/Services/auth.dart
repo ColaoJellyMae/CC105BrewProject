@@ -9,10 +9,15 @@ class AuthService {
 
   //create user obj based on FirebaseUser
 
-  User _userFromFirebaseUser(FirebaseUser user){
-    
+  User _userFromFirebaseUser(FirebaseUser user) {
     //used to put condition
-    return user !=null ? User(uid:user.uid): null;
+    return user != null ? User(uid: user.uid) : null;
+  }
+
+  //auth change user stream, we can get the value and change the value whatever we wanted
+  Stream<User> get user {
+    return _auth.onAuthStateChanged
+        .map(_userFromFirebaseUser);
   }
 
   //sign for anonymous
