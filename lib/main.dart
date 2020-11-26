@@ -1,6 +1,7 @@
 import 'package:brew/Services/auth.dart';
 import 'package:brew/screens/wrapper.dart';
 import 'package:brew/models/user.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -13,7 +14,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamProvider<User>.value(
-      value: AuthService().user,
+     
+      value: Customclassname().user,
         child: MaterialApp(
         home: Wrapper(),
       ),
