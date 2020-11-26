@@ -1,3 +1,4 @@
+import 'package:brew/Services/database.dart';
 import 'package:brew/models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -35,8 +36,9 @@ class AuthService {
       return null;
     }
   }
+
   //sign with email and password
- Future signInWithEmailandPassword(String email, String password) async {
+  Future signInWithEmailandPassword(String email, String password) async {
     try {
       UserCredential result = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
@@ -48,13 +50,16 @@ class AuthService {
     }
   }
 
-
   //register with email and password
   Future registerWithEmailandPassword(String email, String password) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       User user = result.user;
+
+      await DatabaseService(uid: user.uid)
+          .updateUserData('0', 'new crew member', 100);
+
       return _userFromFirebaseUser(user);
     } catch (e) {
       print(e.toString());
