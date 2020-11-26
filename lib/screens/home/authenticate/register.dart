@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:brew/Services/auth.dart';
 import 'package:brew/shared/constants.dart';
+import 'package:brew/shared/loading.dart';
 
 class Register extends StatefulWidget {
   final Function toggleView;
@@ -13,6 +14,7 @@ class Register extends StatefulWidget {
 class _RegisterState extends State<Register> {
   final AuthService _auth = AuthService();
   final _formkey = GlobalKey<FormState>();
+  bool loading = false;
 
   String email = '';
   String password = '';
@@ -20,7 +22,10 @@ class _RegisterState extends State<Register> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    
+    //used to show loading screen
+    return loading ? Loading() : Scaffold(
+     
       backgroundColor: Colors.brown[100],
       appBar: AppBar(
           backgroundColor: Colors.brown[400],
@@ -45,14 +50,18 @@ class _RegisterState extends State<Register> {
             children: <Widget>[
               SizedBox(height: 20.0),
               TextFormField(
-                  decoration: textInputDecoration.copyWith( hintText: 'Email',),
+                  decoration: textInputDecoration.copyWith(
+                    hintText: 'Email',
+                  ),
                   validator: (val) => val.isEmpty ? 'Enter an email' : null,
                   onChanged: (val) {
                     setState(() => email = val);
                   }),
               SizedBox(height: 20.0),
               TextFormField(
-                  decoration: textInputDecoration.copyWith( hintText: 'Password',), 
+                  decoration: textInputDecoration.copyWith(
+                    hintText: 'Password',
+                  ),
                   obscureText: true,
                   validator: (val) =>
                       val.length < 6 ? 'Enter a password 6+ chars long' : null,
@@ -68,17 +77,22 @@ class _RegisterState extends State<Register> {
                   ),
                   onPressed: () async {
                     if (_formkey.currentState.validate()) {
+                      setState(() => loading = true);
                       dynamic result = await _auth.registerWithEmailandPassword(
                           email, password);
                       if (result == null) {
-                        setState(() => error = 'please supply a valid email');
+                        setState(() {
+                          error = 'please supply a valid email';
+                          loading = false;
+                        });
                       }
                     }
                   }),
-                  SizedBox(height: 12.0),
-                  Text(
-                    error,style: TextStyle(color: Colors.red,fontSize:14.0),
-                  ),
+              SizedBox(height: 12.0),
+              Text(
+                error,
+                style: TextStyle(color: Colors.red, fontSize: 14.0),
+              ),
             ],
           ),
         ),

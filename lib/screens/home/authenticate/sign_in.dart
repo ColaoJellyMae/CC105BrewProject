@@ -1,6 +1,8 @@
 import 'package:brew/Services/auth.dart';
+import 'package:brew/shared/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:brew/shared/constants.dart';
+
 class SignIn extends StatefulWidget {
   final Function toggleView;
   SignIn({this.toggleView});
@@ -14,6 +16,7 @@ class _SignInState extends State<SignIn> {
 
   final AuthService _auth = AuthService();
   final _formkey = GlobalKey<FormState>();
+  bool loading = false;
 
   //text field state
   String email = '';
@@ -22,7 +25,7 @@ class _SignInState extends State<SignIn> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return loading ? Loading() : Scaffold(
       backgroundColor: Colors.brown[100],
       appBar: AppBar(
         backgroundColor: Colors.brown[400],
@@ -48,14 +51,18 @@ class _SignInState extends State<SignIn> {
             children: <Widget>[
               SizedBox(height: 20.0),
               TextFormField(
-                decoration: textInputDecoration.copyWith( hintText: 'Email',),
-                validator: (val) => val.isEmpty ? 'Enter an email' : null,
-                onChanged: (val) {
-                setState(() => email = val);
-              }),
+                  decoration: textInputDecoration.copyWith(
+                    hintText: 'Email',
+                  ),
+                  validator: (val) => val.isEmpty ? 'Enter an email' : null,
+                  onChanged: (val) {
+                    setState(() => email = val);
+                  }),
               SizedBox(height: 20.0),
               TextFormField(
-                  decoration: textInputDecoration.copyWith( hintText: 'Password',),
+                  decoration: textInputDecoration.copyWith(
+                    hintText: 'Password',
+                  ),
                   obscureText: true,
                   validator: (val) =>
                       val.length < 6 ? 'Enter a password 6+ chars long' : null,
@@ -71,17 +78,26 @@ class _SignInState extends State<SignIn> {
                   ),
                   onPressed: () async {
                     if (_formkey.currentState.validate()) {
-                      dynamic result = await _auth.signInWithEmailandPassword(email, password);
+                      //show the loading widget 
+                      setState(() => loading = true);
+                      dynamic result = await _auth.signInWithEmailandPassword(
+                          email, password);
                       if (result == null) {
-                        setState(() => error = 'could not sign in with those credentials');
+                        setState(() {
+                          error = 'could not sign in with those credentials';
+                          
+                          //don't show the loading widget again
+
+                          loading = false;
+                        });
                       }
                     }
-                  }
-                  ),
-                  SizedBox(height: 12.0),
-                  Text(
-                    error,style: TextStyle(color: Colors.red,fontSize:14.0),
-                  ),
+                  }),
+              SizedBox(height: 12.0),
+              Text(
+                error,
+                style: TextStyle(color: Colors.red, fontSize: 14.0),
+              ),
             ],
           ),
         ),
