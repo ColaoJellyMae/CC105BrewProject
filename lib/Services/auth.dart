@@ -1,5 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:brew/models/user.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+// create database.dart
+
+//usage of newer version  (FirebaseUser -> User) | (User -> Customclassname) |
+//(AuthResult -> UserCredential)
 
 class AuthService {
   //4th video tutorial = signing in anonymously
@@ -9,21 +14,21 @@ class AuthService {
 
   //create user obj based on FirebaseUser
 
-  User _userFromFirebaseUser(FirebaseUser user) {
+  Customclassname _userFromFirebaseUser(User user) {
     //used to put condition
-    return user != null ? User(uid: user.uid) : null;
+    return user != null ? Customclassname(uid: user.uid) : null;
   }
 
   //auth change user stream, we can get the value and change the value whatever we wanted
-  Stream<User> get user {
-    return _auth.onAuthStateChanged.map(_userFromFirebaseUser);
+  Stream<Customclassname> get user {
+    return _auth.authStateChanges().map(_userFromFirebaseUser);
   }
 
   //sign for anonymous
   Future signAnonymous() async {
     try {
-      AuthResult result = await _auth.signInAnonymously();
-      FirebaseUser user = result.user;
+      UserCredential userCredential = await _auth.signInAnonymously();
+      User user = userCredential.user;
       return _userFromFirebaseUser(user);
     } catch (e) {
       print(e.toString());
@@ -33,6 +38,17 @@ class AuthService {
   //sign with email and password
 
   //register with email and password
+  Future registerWithEmailandPassword(String email, String password) async {
+    try {
+      UserCredential result = await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
+      User user = result.user;
+      return _userFromFirebaseUser(user);
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
 
   // sign out
   Future signOut() async {

@@ -1,7 +1,7 @@
-class User{
+class Customclassname{
   
   final String uid;
 
-  User({ this.uid });
+  Customclassname({ this.uid });
   
 }
