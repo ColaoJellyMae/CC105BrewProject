@@ -36,9 +36,9 @@ class DatabaseService {
     return UserData(
       //please fix
         uid: uid,
-        name: snapshot.data['name'],
-        sugars: snapshot.data['sugars'],
-        strength: snapshot.data['strength']);
+        name: snapshot.data()['name'],
+        sugars: snapshot.data()['sugars'],
+        strength: snapshot.data()['strength']);
   }
 
   // get brews stream

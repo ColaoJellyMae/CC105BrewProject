@@ -46,7 +46,14 @@ class Home extends StatelessWidget {
               onPressed: () => _showSettingsPanel(), 
             )],
         ),
-        body:BrewList(),
+        body:Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/beans.jpg'),
+              fit:BoxFit.cover,
+              ),
+          ),
+          child: BrewList()),
       ),
     );
   }
