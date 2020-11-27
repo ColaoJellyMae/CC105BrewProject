@@ -1,10 +1,11 @@
 import 'package:brew/Services/auth.dart';
 import 'package:brew/models/brew.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:brew/screens/home/settings_form.dart';
+//import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:brew/Services/database.dart';
 import 'package:provider/provider.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+//import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:brew/screens/home/brew_list.dart';
 
 class Home extends StatelessWidget {
@@ -17,7 +18,7 @@ class Home extends StatelessWidget {
         showModalBottomSheet(context: context, builder:(context) {
           return Container(
             padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
-            child: Text('bottom sheet'),
+            child: SettingsForm(),
           );
         });
     }
@@ -43,7 +44,7 @@ class Home extends StatelessWidget {
               icon: Icon(Icons.settings),
               label: Text('settings'),
               onPressed: () => _showSettingsPanel(), 
-          ],
+            )],
         ),
         body:BrewList(),
       ),
